@@ -64,6 +64,7 @@ import { ApplicationTheme } from '../../ui/lib/application-theme'
 import { TipState } from '../../models/tip'
 import { RepositoryStateCache } from '../stores/repository-state-cache'
 import { Popup, PopupType } from '../../models/popup'
+import { ManualConflictResolution } from '../../models/manual-conflict-resolution'
 
 /**
  * An error handler function.
@@ -264,7 +265,7 @@ export class Dispatcher {
    * Refresh the repository. This would be used, e.g., when the app gains focus.
    */
   public refreshRepository(repository: Repository): Promise<void> {
-    return this.appStore._refreshRepository(repository)
+    return this.appStore._refreshOrRecoverRepository(repository)
   }
 
   /** Show the popup. This will close any current popup. */
@@ -1291,6 +1292,21 @@ export class Dispatcher {
 
   public resolveCurrentEditor() {
     return this.appStore._resolveCurrentEditor()
+  }
+
+  /**
+   *  update the manual resolution method for a file
+   */
+  public updateManualConflictResolution(
+    repository: Repository,
+    path: string,
+    manualResolution: ManualConflictResolution | null
+  ) {
+    return this.appStore._updateManualConflictResolution(
+      repository,
+      path,
+      manualResolution
+    )
   }
 
   /**
